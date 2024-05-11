@@ -5,8 +5,10 @@ import com.workintech.s19d1.entity.Gender;
 import com.workintech.s19d1.entity.Movie;
 import com.workintech.s19d1.exceptions.ApiException;
 import com.workintech.s19d1.exceptions.ExceptionResponse;
-import com.workintech.s19d1.repository.ActorRepository;
-import com.workintech.s19d1.repository.MovieRepository;
+import com.workintech.s19d1.dao.ActorDao;
+import com.workintech.s19d1.dao.MovieDao;
+import com.workintech.s19d1.service.ActorServiceImpl;
+import com.workintech.s19d1.service.MovieServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,10 +40,10 @@ import static org.mockito.Mockito.*;
 class MainTest {
 
     @Mock
-    private ActorRepository mockActorRepository;
+    private ActorDao mockActorRepository;
 
     @Mock
-    private MovieRepository mockMovieRepository;
+    private MovieDao mockMovieRepository;
 
     private Actor actor;
     private Movie movie;

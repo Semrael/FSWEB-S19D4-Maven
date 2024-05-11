@@ -1,61 +1,40 @@
 package com.workintech.s19d1.service;
 
 import com.workintech.s19d1.dao.ActorDao;
-import com.workintech.s19d1.dao.MovieDao;
 import com.workintech.s19d1.entity.Actor;
-import com.workintech.s19d1.entity.Movie;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.workintech.s19d1.exceptions.ApiException;
 
+import lombok.AllArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class ActorServiceImpl implements ActorService {
-    private ActorDao actordao;
-    private MovieDao movieDao;
+    private final ActorDao actordao;
 
-    @Autowired
-    public ActorServiceImpl(ActorDao actordao, MovieDao movieDao) {
-        this.actordao = actordao;
-        this.movieDao = movieDao;
+
+    @Override
+    public List<Actor> findAll() {
+        return actordao.findAll();
     }
 
     @Override
-    public ActorDao save(Actor actor) {
-        Actor savedActor=actordao.save(actor);
-        return new ActorDao(savedActor.getId(), savedActor.getFirstName(), savedActor.getLastName(), savedActor.getBirthDate());
-
-
+    public Actor save(Actor actor) {
+        return actordao.save(actor);
     }
 
     @Override
-    public ActorDao update(Long id, List<Movie> movieList) {
-        Optional<Actor> updateOptional=actordao.findById(id);
-        if(updateOptional.isPresent()){
-            Actor actor=updateOptional.get();
-            for(Movie movie:movieList){
-                actor.addMovie(movie);
-            }
-            return  save(actor);
-        }
-       //Throw Exception
-        return null;
+    public Actor findById(Long id) {
+        return actordao.findById(id).orElseThrow(()->new ApiException("actor is not found with id: "+id, HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public ActorDao findById(Long id) {
-        return null;
-    }
+    public void delete(Actor actor) {
+          actordao.delete(actor);
 
-    @Override
-    public ActorDao delete(Long id) {
-        return null;
-    }
-
-    @Override
-    public ActorDao addMovieToStudent(Long actorId, Long movieId) {
-        return null;
     }
 }
